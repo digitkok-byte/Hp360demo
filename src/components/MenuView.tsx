@@ -74,10 +74,10 @@ export default function MenuView() {
           onClick={() => setShowCategoryMenu(true)}
           className="flex items-center justify-between px-4 py-3 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
         >
-          <div className="text-[clamp(26px,7vw,32px)] tracking-[0.1em] crt-text">
+          <div className="text-[clamp(18px,5vw,22px)] tracking-[0.1em] crt-text">
             {data?.title}
           </div>
-          <div className="text-[clamp(16px,4.5vw,20px)] crt-text-dim tracking-[0.1em] border border-border-col px-2 py-1">
+          <div className="text-[clamp(12px,3.2vw,14px)] crt-text-dim tracking-[0.12em] border border-[rgba(74,190,121,0.3)] rounded-md px-3 py-1.5 bg-[rgba(74,190,121,0.06)]">
             ▼ МЕНЮ
           </div>
         </button>
@@ -93,13 +93,13 @@ export default function MenuView() {
             className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 crt-scroll"
           >
             {data?.sections.map((section, si) => (
-              <div key={si} className={si > 0 ? 'mt-5' : ''}>
+              <div key={si} className={si > 0 ? 'mt-8' : ''}>
                 {section.title && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: si * 0.08 }}
-                    className="text-[clamp(18px,5vw,22px)] crt-text-mid tracking-[0.18em] py-3 pb-2 border-b border-[rgba(74,190,121,0.25)] border-t border-t-[rgba(74,190,121,0.1)] mb-2"
+                    className="text-[clamp(24px,6.5vw,30px)] crt-text tracking-[0.2em] py-4 pb-3 border-b-2 border-[rgba(74,190,121,0.35)] border-t border-t-[rgba(74,190,121,0.15)] mb-3 uppercase"
                   >
                     {section.title}
                   </motion.div>
@@ -114,30 +114,30 @@ export default function MenuView() {
                       backgroundColor: 'rgba(74,190,121,0.08)',
                       transition: { duration: 0.1 },
                     }}
-                    className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(10px,3vw,14px)] border-b border-[rgba(74,190,121,0.15)] cursor-default"
+                    className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(12px,3.5vw,18px)] border-b border-[rgba(74,190,121,0.1)] cursor-default"
                   >
                     <div>
-                      <div className="text-[clamp(22px,6vw,28px)] crt-text-dim leading-[1.4]">
+                      <div className="text-[clamp(14px,3.8vw,17px)] crt-text-dim leading-[1.4]">
                         {item.name}
                         {item.tag && (
-                          <span className="crt-text-amber text-[clamp(14px,3.5vw,18px)] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
+                          <span className="crt-text-amber text-[clamp(9px,2.2vw,11px)] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
                             {item.tag}
                           </span>
                         )}
                       </div>
                       {item.desc && (
-                        <div className="text-[clamp(16px,4.5vw,20px)] crt-text-mid mt-[2px] opacity-70">
+                        <div className="text-[clamp(10px,2.8vw,12px)] crt-text-mid mt-[2px] opacity-70">
                           {item.desc}
                         </div>
                       )}
                     </div>
-                    <div className="text-[clamp(22px,6vw,28px)] crt-text whitespace-nowrap">
+                    <div className="text-[clamp(14px,3.8vw,17px)] crt-text whitespace-nowrap">
                       {item.price} ₽
                     </div>
                     {(item.image || item.composition) && (
                       <button
                         onClick={() => setSelectedItem(item)}
-                        className="text-[clamp(20px,5.5vw,26px)] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
+                        className="text-[clamp(13px,3.2vw,15px)] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
                         title="Подробнее"
                       >
                         👁
@@ -176,7 +176,7 @@ export default function MenuView() {
             <div className="flex justify-end p-4 relative z-[22]">
               <button
                 onClick={() => setShowCategoryMenu(false)}
-                className="text-[clamp(18px,5vw,22px)] crt-text-dim border border-border-col px-3 py-1.5 hover:bg-[rgba(74,190,121,0.15)] transition-colors cursor-pointer tracking-[0.1em]"
+                className="text-[clamp(12px,3.2vw,14px)] crt-text-dim border border-[rgba(74,190,121,0.3)] rounded-md px-4 py-2 bg-[rgba(74,190,121,0.06)] hover:bg-[rgba(74,190,121,0.15)] transition-colors cursor-pointer tracking-[0.12em]"
               >
                 ✕ ЗАКРЫТЬ
               </button>
