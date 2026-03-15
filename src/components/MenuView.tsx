@@ -49,14 +49,14 @@ export default function MenuView() {
       timers.push(setTimeout(() => {
         setVisibleLoadLines(i + 1);
         setLoadProgress(((i + 1) / loadingLines.length) * 90);
-      }, (i + 1) * 200));
+      }, (i + 1) * 700));
     });
 
-    timers.push(setTimeout(() => setLoadProgress(100), loadingLines.length * 200 + 150));
+    timers.push(setTimeout(() => setLoadProgress(100), 2600));
     timers.push(setTimeout(() => {
       setActiveCategory(id);
       setIsLoading(false);
-    }, loadingLines.length * 200 + 400));
+    }, 3000));
 
     return () => timers.forEach(clearTimeout);
   }, []);
