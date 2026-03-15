@@ -71,7 +71,7 @@ export default function MenuView() {
             <button
               key={cat.id}
               onClick={() => handleCategory(cat.id)}
-              className={`block w-full text-left px-3 py-[clamp(18px,5.5vw,30px)] text-[clamp(12px,3.5vw,15px)] leading-[1.35] border-l-[3px] transition-all duration-150 break-words ${
+              className={`block w-full text-left px-3 py-[clamp(22px,6.5vw,36px)] text-[clamp(12px,3.5vw,15px)] leading-[1.35] border-l-[3px] transition-all duration-150 break-words ${
                 i < categories.length - 1 ? 'border-b border-[rgba(74,190,121,0.12)]' : ''
               } ${
                 cat.id === activeCategory
@@ -111,13 +111,13 @@ export default function MenuView() {
               className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-2 crt-scroll"
             >
               {data?.sections.map((section, si) => (
-                <div key={si} className={si > 0 ? 'mt-3' : ''}>
+                <div key={si} className={si > 0 ? 'mt-5' : ''}>
                   {section.title && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: si * 0.08 }}
-                      className="text-[clamp(10px,2.8vw,12px)] crt-text-mid tracking-[0.18em] py-2.5 pb-1.5 border-b border-[rgba(74,190,121,0.2)] mb-1"
+                      className="text-[clamp(10px,2.8vw,12px)] crt-text-mid tracking-[0.18em] py-3 pb-2 border-b border-[rgba(74,190,121,0.25)] border-t border-t-[rgba(74,190,121,0.1)] mb-2"
                     >
                       {section.title}
                     </motion.div>
@@ -132,7 +132,7 @@ export default function MenuView() {
                         backgroundColor: 'rgba(74,190,121,0.08)',
                         transition: { duration: 0.1 },
                       }}
-                      className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(7px,2vw,10px)] border-b border-[rgba(74,190,121,0.1)] cursor-default"
+                      className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(10px,3vw,14px)] border-b border-[rgba(74,190,121,0.15)] cursor-default"
                     >
                       <div>
                         <div className="text-[clamp(13px,3.5vw,15px)] crt-text-dim leading-[1.4]">
