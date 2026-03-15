@@ -142,7 +142,7 @@ export default function DeviceFrame() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <StateOff />
+                <StateOff onStart={handlePower} />
               </motion.div>
             )}
 
