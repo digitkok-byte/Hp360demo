@@ -8,20 +8,12 @@ import HoloFigure from './HoloFigure';
 import HoloLogo from './HoloLogo';
 import DishLanding from './DishLanding';
 
-const loadingLines = [
-  '> ACCESSING DATABASE...',
-  '> LOADING ITEMS...',
-  '> RENDERING...',
-];
-
 export default function MenuView() {
   const [activeCategory, setActiveCategory] = useState('hookah');
   const [clock, setClock] = useState('00:00:00');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [showCategoryMenu, setShowCategoryMenu] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [visibleLoadLines, setVisibleLoadLines] = useState(0);
+  const [loadKey, setLoadKey] = useState(0);
 
   useEffect(() => {
     const update = () => {
@@ -38,27 +30,9 @@ export default function MenuView() {
   const data = menuData[activeCategory];
 
   const handleCategory = useCallback((id: string) => {
+    setActiveCategory(id);
     setShowCategoryMenu(false);
-    setIsLoading(true);
-    setLoadProgress(0);
-    setVisibleLoadLines(0);
-
-    // Animate loading sequence
-    const timers: NodeJS.Timeout[] = [];
-    loadingLines.forEach((_, i) => {
-      timers.push(setTimeout(() => {
-        setVisibleLoadLines(i + 1);
-        setLoadProgress(((i + 1) / loadingLines.length) * 90);
-      }, (i + 1) * 700));
-    });
-
-    timers.push(setTimeout(() => setLoadProgress(100), 2600));
-    timers.push(setTimeout(() => {
-      setActiveCategory(id);
-      setIsLoading(false);
-    }, 3000));
-
-    return () => timers.forEach(clearTimeout);
+    setLoadKey(k => k + 1);
   }, []);
 
   const currentLabel = categories.find(c => c.id === activeCategory)?.label || '';
@@ -113,106 +87,81 @@ export default function MenuView() {
 
         {/* Items */}
         <AnimatePresence mode="wait">
-          {isLoading ? (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="flex-1 flex flex-col justify-center pl-[5%] pr-[15px] py-4"
-            >
-              <div className="flex flex-col gap-1 mb-4">
-                {loadingLines.slice(0, visibleLoadLines).map((line, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: '100%' }}
-                    transition={{ duration: 0.2, ease: 'easeOut' }}
-                    className="text-[13px] crt-text-mid whitespace-nowrap overflow-hidden"
-                  >
-                    {line}
-                  </motion.div>
-                ))}
-              </div>
-              <div className="border border-phosphor-dim h-[10px] relative overflow-hidden">
-                <motion.div
-                  className="h-full"
-                  style={{
-                    background: 'linear-gradient(90deg, var(--color-phosphor-dim), var(--color-phosphor))',
-                    boxShadow: '0 0 8px var(--color-phosphor)',
-                  }}
-                  animate={{ width: `${loadProgress}%` }}
-                  transition={{ duration: 0.1, ease: 'linear' }}
-                />
-              </div>
-            </motion.div>
-          ) : (
           <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
+            key={`${activeCategory}-${loadKey}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             className="flex-1 overflow-y-auto overflow-x-hidden pl-[5%] pr-[15px] py-4 crt-scroll"
           >
-            {data?.sections.map((section, si) => (
-              <div key={si} className={si > 0 ? 'mt-[60px]' : ''}>
-                {section.title && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: si * 0.08 }}
-                    className="text-[24px] font-semibold crt-text-dim tracking-[0.2em] py-3 pl-[10px] border-b-2 border-[rgba(74,190,121,0.35)] mb-[30px] uppercase"
-                  >
-                    {section.title}
-                  </motion.div>
-                )}
-                {section.items.map((item, ii) => (
-                  <motion.div
-                    key={ii}
-                    initial={{ opacity: 0, x: 4 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: si * 0.06 + ii * 0.03 }}
-                    whileHover={{
-                      backgroundColor: 'rgba(74,190,121,0.08)',
-                      transition: { duration: 0.1 },
-                    }}
-                    className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[15px] border-b border-[rgba(74,190,121,0.1)] cursor-default"
-                  >
-                    <div>
-                      <div className="text-[16px] crt-text-dim leading-[1.4]">
-                        {item.name}
-                        {item.tag && (
-                          <span className="crt-text-amber text-[11px] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
-                            {item.tag}
-                          </span>
-                        )}
-                      </div>
-                      {item.desc && (
-                        <div className="text-[13px] crt-text-mid mt-[2px] opacity-70">
-                          {item.desc}
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-[16px] crt-text whitespace-nowrap">
-                      {item.price} ₽
-                    </div>
-                    {(item.image || item.composition) && (
-                      <button
-                        onClick={() => setSelectedItem(item)}
-                        className="text-[16px] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
-                        title="Подробнее"
+            {(() => {
+              let itemIndex = 0;
+              const totalItems = data?.sections.reduce((sum, s) => sum + (s.title ? 1 : 0) + s.items.length, 0) || 1;
+              const delayPerItem = 2 / totalItems;
+              return data?.sections.map((section, si) => (
+                <div key={si} className={si > 0 ? 'mt-[60px]' : ''}>
+                  {section.title && (() => {
+                    const idx = itemIndex++;
+                    return (
+                      <motion.div
+                        initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+                        animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+                        transition={{ delay: idx * delayPerItem, duration: 0.4, ease: 'easeOut' }}
+                        className="text-[24px] font-semibold crt-text-dim tracking-[0.2em] py-3 pl-[10px] border-b-2 border-[rgba(74,190,121,0.35)] mb-[30px] uppercase"
                       >
-                        👁
-                      </button>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
-            ))}
+                        {section.title}
+                      </motion.div>
+                    );
+                  })()}
+                  {section.items.map((item, ii) => {
+                    const idx = itemIndex++;
+                    return (
+                      <motion.div
+                        key={ii}
+                        initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+                        animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+                        transition={{ delay: idx * delayPerItem, duration: 0.4, ease: 'easeOut' }}
+                        whileHover={{
+                          backgroundColor: 'rgba(74,190,121,0.08)',
+                          transition: { duration: 0.1 },
+                        }}
+                        className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[15px] border-b border-[rgba(74,190,121,0.1)] cursor-default"
+                      >
+                        <div>
+                          <div className="text-[16px] crt-text-dim leading-[1.4]">
+                            {item.name}
+                            {item.tag && (
+                              <span className="crt-text-amber text-[11px] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
+                                {item.tag}
+                              </span>
+                            )}
+                          </div>
+                          {item.desc && (
+                            <div className="text-[13px] crt-text-mid mt-[2px] opacity-70">
+                              {item.desc}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-[16px] crt-text whitespace-nowrap">
+                          {item.price} ₽
+                        </div>
+                        {(item.image || item.composition) && (
+                          <button
+                            onClick={() => setSelectedItem(item)}
+                            className="text-[16px] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
+                            title="Подробнее"
+                          >
+                            👁
+                          </button>
+                        )}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              ));
+            })()}
           </motion.div>
-          )}
         </AnimatePresence>
 
         {/* Holographic logo — bottom left */}
