@@ -11,6 +11,7 @@ export default function MenuView() {
   const [activeCategory, setActiveCategory] = useState('hookah');
   const [clock, setClock] = useState('00:00:00');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [showCategoryMenu, setShowCategoryMenu] = useState(false);
 
   useEffect(() => {
     const update = () => {
@@ -28,7 +29,10 @@ export default function MenuView() {
 
   const handleCategory = useCallback((id: string) => {
     setActiveCategory(id);
+    setShowCategoryMenu(false);
   }, []);
+
+  const currentLabel = categories.find(c => c.id === activeCategory)?.label || '';
 
   return (
     <motion.div
@@ -63,115 +67,152 @@ export default function MenuView() {
         </div>
       </div>
 
-      {/* Body */}
-      <div className="grid grid-cols-[auto_1fr] overflow-hidden min-h-0 relative">
-        {/* Category Nav — much more spacing */}
-        <nav className="flex flex-col border-r border-[rgba(74,190,121,0.25)] overflow-y-auto overflow-x-hidden bg-[rgba(4,10,5,0.7)] min-w-[clamp(100px,30vw,130px)] w-[clamp(100px,30vw,130px)] flex-shrink-0 crt-scroll">
-          {categories.map((cat, i) => (
-            <button
-              key={cat.id}
-              onClick={() => handleCategory(cat.id)}
-              className={`block w-full text-left px-3 py-[clamp(132px,39vw,216px)] text-[clamp(12px,3.5vw,15px)] leading-[1.35] border-l-[3px] transition-all duration-150 break-words ${
-                i < categories.length - 1 ? 'border-b border-[rgba(74,190,121,0.12)]' : ''
-              } ${
-                cat.id === activeCategory
-                  ? 'crt-text border-l-phosphor bg-[rgba(74,190,121,0.15)]'
-                  : 'crt-text-dim border-l-transparent hover:bg-[rgba(74,190,121,0.07)] hover:border-l-phosphor-dim'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </nav>
+      {/* Body — full width content, no sidebar */}
+      <div className="flex flex-col overflow-hidden min-h-0 relative">
+        {/* Category selector bar */}
+        <button
+          onClick={() => setShowCategoryMenu(true)}
+          className="flex items-center justify-between px-4 py-3 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
+        >
+          <div className="text-[clamp(15px,4vw,18px)] tracking-[0.1em] crt-text">
+            {data?.title}
+          </div>
+          <div className="text-[clamp(10px,2.8vw,12px)] crt-text-dim tracking-[0.1em] border border-border-col px-2 py-1">
+            ▼ МЕНЮ
+          </div>
+        </button>
 
-        {/* Content */}
-        <div className="flex flex-col overflow-hidden min-h-0 relative">
-          {/* Category title */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory + '-title'}
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              transition={{ duration: 0.2 }}
-              className="px-3 py-2.5 text-[clamp(15px,4vw,18px)] tracking-[0.1em] crt-text border-b border-border-col flex-shrink-0"
-            >
-              {data?.title}
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Items */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-2 crt-scroll"
-            >
-              {data?.sections.map((section, si) => (
-                <div key={si} className={si > 0 ? 'mt-5' : ''}>
-                  {section.title && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: si * 0.08 }}
-                      className="text-[clamp(10px,2.8vw,12px)] crt-text-mid tracking-[0.18em] py-3 pb-2 border-b border-[rgba(74,190,121,0.25)] border-t border-t-[rgba(74,190,121,0.1)] mb-2"
-                    >
-                      {section.title}
-                    </motion.div>
-                  )}
-                  {section.items.map((item, ii) => (
-                    <motion.div
-                      key={ii}
-                      initial={{ opacity: 0, x: 4 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: si * 0.06 + ii * 0.03 }}
-                      whileHover={{
-                        backgroundColor: 'rgba(74,190,121,0.08)',
-                        transition: { duration: 0.1 },
-                      }}
-                      className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(10px,3vw,14px)] border-b border-[rgba(74,190,121,0.15)] cursor-default"
-                    >
-                      <div>
-                        <div className="text-[clamp(13px,3.5vw,15px)] crt-text-dim leading-[1.4]">
-                          {item.name}
-                          {item.tag && (
-                            <span className="crt-text-amber text-[clamp(9px,2.2vw,11px)] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
-                              {item.tag}
-                            </span>
-                          )}
-                        </div>
-                        {item.desc && (
-                          <div className="text-[clamp(9px,2.5vw,11px)] crt-text-mid mt-[2px] opacity-70">
-                            {item.desc}
-                          </div>
+        {/* Items */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 crt-scroll"
+          >
+            {data?.sections.map((section, si) => (
+              <div key={si} className={si > 0 ? 'mt-5' : ''}>
+                {section.title && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: si * 0.08 }}
+                    className="text-[clamp(10px,2.8vw,12px)] crt-text-mid tracking-[0.18em] py-3 pb-2 border-b border-[rgba(74,190,121,0.25)] border-t border-t-[rgba(74,190,121,0.1)] mb-2"
+                  >
+                    {section.title}
+                  </motion.div>
+                )}
+                {section.items.map((item, ii) => (
+                  <motion.div
+                    key={ii}
+                    initial={{ opacity: 0, x: 4 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: si * 0.06 + ii * 0.03 }}
+                    whileHover={{
+                      backgroundColor: 'rgba(74,190,121,0.08)',
+                      transition: { duration: 0.1 },
+                    }}
+                    className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(10px,3vw,14px)] border-b border-[rgba(74,190,121,0.15)] cursor-default"
+                  >
+                    <div>
+                      <div className="text-[clamp(13px,3.5vw,15px)] crt-text-dim leading-[1.4]">
+                        {item.name}
+                        {item.tag && (
+                          <span className="crt-text-amber text-[clamp(9px,2.2vw,11px)] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
+                            {item.tag}
+                          </span>
                         )}
                       </div>
-                      <div className="text-[clamp(13px,3.5vw,15px)] crt-text whitespace-nowrap">
-                        {item.price} ₽
-                      </div>
-                      {(item.image || item.composition) && (
-                        <button
-                          onClick={() => setSelectedItem(item)}
-                          className="text-[clamp(12px,3vw,14px)] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
-                          title="Подробнее"
-                        >
-                          👁
-                        </button>
+                      {item.desc && (
+                        <div className="text-[clamp(9px,2.5vw,11px)] crt-text-mid mt-[2px] opacity-70">
+                          {item.desc}
+                        </div>
                       )}
-                    </motion.div>
-                  ))}
-                </div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+                    </div>
+                    <div className="text-[clamp(13px,3.5vw,15px)] crt-text whitespace-nowrap">
+                      {item.price} ₽
+                    </div>
+                    {(item.image || item.composition) && (
+                      <button
+                        onClick={() => setSelectedItem(item)}
+                        className="text-[clamp(12px,3vw,14px)] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
+                        title="Подробнее"
+                      >
+                        👁
+                      </button>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
-          {/* Holographic figure — bottom right */}
-          <HoloFigure />
-        </div>
+        {/* Holographic figure — bottom right */}
+        <HoloFigure />
       </div>
+
+      {/* Fullscreen Category Menu overlay */}
+      <AnimatePresence>
+        {showCategoryMenu && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 z-[20] bg-[rgba(2,8,4,0.97)] flex flex-col"
+          >
+            {/* Scanlines */}
+            <div
+              className="absolute inset-0 pointer-events-none z-[21]"
+              style={{
+                background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)',
+              }}
+            />
+
+            {/* Close button */}
+            <div className="flex justify-end p-4 relative z-[22]">
+              <button
+                onClick={() => setShowCategoryMenu(false)}
+                className="text-[clamp(11px,3vw,13px)] crt-text-dim border border-border-col px-3 py-1.5 hover:bg-[rgba(74,190,121,0.15)] transition-colors cursor-pointer tracking-[0.1em]"
+              >
+                ✕ ЗАКРЫТЬ
+              </button>
+            </div>
+
+            {/* Category list */}
+            <div className="flex-1 flex flex-col justify-center items-center gap-1 px-6 relative z-[22] overflow-y-auto">
+              {categories.map((cat, i) => (
+                <motion.button
+                  key={cat.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04, duration: 0.2 }}
+                  onClick={() => handleCategory(cat.id)}
+                  className={`w-full max-w-[320px] text-center py-[clamp(14px,4vw,20px)] text-[clamp(16px,4.5vw,20px)] tracking-[0.15em] border-b border-[rgba(74,190,121,0.15)] transition-all cursor-pointer ${
+                    cat.id === activeCategory
+                      ? 'crt-text bg-[rgba(74,190,121,0.12)]'
+                      : 'crt-text-dim hover:crt-text hover:bg-[rgba(74,190,121,0.08)]'
+                  }`}
+                >
+                  {cat.label}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Bottom decorative line */}
+            <motion.div
+              className="h-[2px] flex-shrink-0"
+              style={{ background: 'linear-gradient(to right, transparent, rgba(74,190,121,0.5), transparent)' }}
+              animate={{ opacity: [0.3, 0.7, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Dish Landing overlay */}
       <AnimatePresence>
         {selectedItem && (
