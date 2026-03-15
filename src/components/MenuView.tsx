@@ -71,7 +71,7 @@ export default function MenuView() {
             <button
               key={cat.id}
               onClick={() => handleCategory(cat.id)}
-              className={`block w-full text-left px-3 py-[clamp(44px,13vw,72px)] text-[clamp(12px,3.5vw,15px)] leading-[1.35] border-l-[3px] transition-all duration-150 break-words ${
+              className={`block w-full text-left px-3 py-[clamp(132px,39vw,216px)] text-[clamp(12px,3.5vw,15px)] leading-[1.35] border-l-[3px] transition-all duration-150 break-words ${
                 i < categories.length - 1 ? 'border-b border-[rgba(74,190,121,0.12)]' : ''
               } ${
                 cat.id === activeCategory
