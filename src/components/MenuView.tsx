@@ -5,13 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { categories, menuData } from '@/data/menu';
 import type { MenuItem } from '@/data/menu';
 import HoloFigure from './HoloFigure';
+import HoloLogo from './HoloLogo';
 import DishLanding from './DishLanding';
 
 export default function MenuView() {
   const [activeCategory, setActiveCategory] = useState('hookah');
   const [clock, setClock] = useState('00:00:00');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
-  const [showCategoryMenu, setShowCategoryMenu] = useState(false);
+  const [showCategoryMenu, setShowCategoryMenu] = useState(true);
 
   useEffect(() => {
     const update = () => {
@@ -44,8 +45,8 @@ export default function MenuView() {
       {/* Header — two rows: centered logo on top, clock below */}
       <div className="border-b border-border-col bg-[rgba(6,18,9,0.9)]">
         {/* Logo row — centered */}
-        <div className="text-[clamp(28px,8vw,36px)] tracking-[0.2em] crt-text text-center py-2.5 px-3">
-          HOOKAHPLACE <span className="crt-text">360</span>
+        <div className="text-[28px] font-semibold tracking-[0.2em] text-center py-3 pl-[5%] pr-[15px] animate-pulse" style={{ color: '#ff4050', textShadow: '0 0 12px rgba(255,64,80,1), 0 0 28px rgba(255,40,60,0.9), 0 0 50px rgba(255,20,40,0.6), 0 0 80px rgba(255,0,30,0.4), 0 0 120px rgba(255,0,20,0.2)' }}>
+          HOOKAHPLACE <span style={{ color: '#ff6070', textShadow: '0 0 12px rgba(255,96,112,1), 0 0 28px rgba(255,70,90,0.9), 0 0 50px rgba(255,50,70,0.6), 0 0 80px rgba(255,30,50,0.4)' }}>360</span>
         </div>
         {/* Clock & RAD row */}
         <div className="flex items-center justify-center gap-3 pb-2 px-3">
@@ -61,7 +62,7 @@ export default function MenuView() {
               <text x="4" y="9" fontFamily="Share Tech Mono, monospace" fontSize="7" fill="var(--color-amber)" opacity="0.9">RAD</text>
             </svg>
           </div>
-          <div className="text-[clamp(20px,5.5vw,26px)] crt-text-dim tracking-[0.08em] border border-border-col px-2 py-0.5">
+          <div className="text-[16px] crt-text-dim tracking-[0.08em] border border-border-col px-2 py-0.5">
             {clock}
           </div>
         </div>
@@ -72,13 +73,13 @@ export default function MenuView() {
         {/* Category selector bar */}
         <button
           onClick={() => setShowCategoryMenu(true)}
-          className="flex items-center justify-between px-4 py-3 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
+          className="flex items-center gap-2 pl-[5%] pr-[15px] py-4 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
         >
-          <div className="text-[clamp(18px,5vw,22px)] tracking-[0.1em] crt-text">
+          <div className="text-[28px] font-semibold tracking-[0.1em] crt-text-dim">
             {data?.title}
           </div>
-          <div className="text-[clamp(12px,3.2vw,14px)] crt-text-dim tracking-[0.12em] border border-[rgba(74,190,121,0.3)] rounded-md px-3 py-1.5 bg-[rgba(74,190,121,0.06)]">
-            ▼ МЕНЮ
+          <div className="text-[clamp(12px,3.2vw,14px)] tracking-[0.12em] border border-[rgba(255,180,40,0.7)] rounded-md px-3 py-1.5 bg-[rgba(255,160,40,0.15)] flex-shrink-0 animate-pulse" style={{ color: '#ffcc40', textShadow: '0 0 10px rgba(255,180,40,1), 0 0 22px rgba(255,150,20,0.8), 0 0 40px rgba(255,120,10,0.5), 0 0 60px rgba(255,100,0,0.3)', boxShadow: '0 0 12px rgba(255,180,40,0.4), 0 0 24px rgba(255,140,20,0.15), inset 0 0 8px rgba(255,180,40,0.15)' }}>
+            МЕНЮ
           </div>
         </button>
 
@@ -90,16 +91,16 @@ export default function MenuView() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25 }}
-            className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3 crt-scroll"
+            className="flex-1 overflow-y-auto overflow-x-hidden pl-[5%] pr-[15px] py-4 crt-scroll"
           >
             {data?.sections.map((section, si) => (
-              <div key={si} className={si > 0 ? 'mt-8' : ''}>
+              <div key={si} className={si > 0 ? 'mt-[60px]' : ''}>
                 {section.title && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: si * 0.08 }}
-                    className="text-[clamp(24px,6.5vw,30px)] crt-text tracking-[0.2em] py-4 pb-3 border-b-2 border-[rgba(74,190,121,0.35)] border-t border-t-[rgba(74,190,121,0.15)] mb-3 uppercase"
+                    className="text-[24px] font-semibold crt-text-dim tracking-[0.2em] py-3 pl-[10px] border-b-2 border-[rgba(74,190,121,0.35)] mb-[30px] uppercase"
                   >
                     {section.title}
                   </motion.div>
@@ -114,30 +115,30 @@ export default function MenuView() {
                       backgroundColor: 'rgba(74,190,121,0.08)',
                       transition: { duration: 0.1 },
                     }}
-                    className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(12px,3.5vw,18px)] border-b border-[rgba(74,190,121,0.1)] cursor-default"
+                    className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[15px] border-b border-[rgba(74,190,121,0.1)] cursor-default"
                   >
                     <div>
-                      <div className="text-[clamp(14px,3.8vw,17px)] crt-text-dim leading-[1.4]">
+                      <div className="text-[16px] crt-text-dim leading-[1.4]">
                         {item.name}
                         {item.tag && (
-                          <span className="crt-text-amber text-[clamp(9px,2.2vw,11px)] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
+                          <span className="crt-text-amber text-[11px] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
                             {item.tag}
                           </span>
                         )}
                       </div>
                       {item.desc && (
-                        <div className="text-[clamp(10px,2.8vw,12px)] crt-text-mid mt-[2px] opacity-70">
+                        <div className="text-[13px] crt-text-mid mt-[2px] opacity-70">
                           {item.desc}
                         </div>
                       )}
                     </div>
-                    <div className="text-[clamp(14px,3.8vw,17px)] crt-text whitespace-nowrap">
+                    <div className="text-[16px] crt-text whitespace-nowrap">
                       {item.price} ₽
                     </div>
                     {(item.image || item.composition) && (
                       <button
                         onClick={() => setSelectedItem(item)}
-                        className="text-[clamp(13px,3.2vw,15px)] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
+                        className="text-[16px] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
                         title="Подробнее"
                       >
                         👁
@@ -150,6 +151,8 @@ export default function MenuView() {
           </motion.div>
         </AnimatePresence>
 
+        {/* Holographic logo — bottom left */}
+        <HoloLogo />
         {/* Holographic figure — bottom right */}
         <HoloFigure />
       </div>
@@ -172,18 +175,8 @@ export default function MenuView() {
               }}
             />
 
-            {/* Close button */}
-            <div className="flex justify-end p-4 relative z-[22]">
-              <button
-                onClick={() => setShowCategoryMenu(false)}
-                className="text-[clamp(12px,3.2vw,14px)] crt-text-dim border border-[rgba(74,190,121,0.3)] rounded-md px-4 py-2 bg-[rgba(74,190,121,0.06)] hover:bg-[rgba(74,190,121,0.15)] transition-colors cursor-pointer tracking-[0.12em]"
-              >
-                ✕ ЗАКРЫТЬ
-              </button>
-            </div>
-
             {/* Category list */}
-            <div className="flex-1 flex flex-col justify-center items-center gap-1 px-6 relative z-[22] overflow-y-auto">
+            <div className="flex-1 flex flex-col justify-center items-center gap-1 pl-[5%] pr-[15px] relative z-[22] overflow-y-auto">
               {categories.map((cat, i) => (
                 <motion.button
                   key={cat.id}
@@ -191,7 +184,7 @@ export default function MenuView() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.04, duration: 0.2 }}
                   onClick={() => handleCategory(cat.id)}
-                  className={`w-full max-w-[320px] text-center py-[clamp(22px,6vw,32px)] text-[clamp(28px,7.5vw,36px)] tracking-[0.15em] border-b border-[rgba(74,190,121,0.15)] transition-all cursor-pointer ${
+                  className={`w-full max-w-[320px] text-center py-[18px] pl-[10px] text-[20px] font-semibold tracking-[0.15em] border-b border-[rgba(74,190,121,0.15)] transition-all cursor-pointer ${
                     cat.id === activeCategory
                       ? 'crt-text bg-[rgba(74,190,121,0.12)]'
                       : 'crt-text-dim hover:crt-text hover:bg-[rgba(74,190,121,0.08)]'
