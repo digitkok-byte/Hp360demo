@@ -66,7 +66,7 @@ export default function MenuView() {
       {/* Body */}
       <div className="grid grid-cols-[auto_1fr] overflow-hidden min-h-0 relative">
         {/* Category Nav — much more spacing */}
-        <nav className="flex flex-col border-r border-[rgba(74,190,121,0.25)] overflow-y-auto overflow-x-hidden bg-[rgba(4,10,5,0.7)] min-w-[clamp(80px,26vw,110px)] w-[clamp(80px,26vw,110px)] flex-shrink-0 crt-scroll">
+        <nav className="flex flex-col border-r border-[rgba(74,190,121,0.25)] overflow-y-auto overflow-x-hidden bg-[rgba(4,10,5,0.7)] min-w-[clamp(100px,30vw,130px)] w-[clamp(100px,30vw,130px)] flex-shrink-0 crt-scroll">
           {categories.map((cat, i) => (
             <button
               key={cat.id}
