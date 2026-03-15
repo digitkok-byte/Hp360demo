@@ -44,7 +44,7 @@ export default function MenuView() {
       {/* Header — two rows: centered logo on top, clock below */}
       <div className="border-b border-border-col bg-[rgba(6,18,9,0.9)]">
         {/* Logo row — centered */}
-        <div className="text-[clamp(16px,4.5vw,20px)] tracking-[0.2em] crt-text text-center py-2.5 px-3">
+        <div className="text-[clamp(28px,8vw,36px)] tracking-[0.2em] crt-text text-center py-2.5 px-3">
           HOOKAHPLACE <span className="crt-text">360</span>
         </div>
         {/* Clock & RAD row */}
@@ -61,7 +61,7 @@ export default function MenuView() {
               <text x="4" y="9" fontFamily="Share Tech Mono, monospace" fontSize="7" fill="var(--color-amber)" opacity="0.9">RAD</text>
             </svg>
           </div>
-          <div className="text-[clamp(12px,3.2vw,14px)] crt-text-dim tracking-[0.08em] border border-border-col px-2 py-0.5">
+          <div className="text-[clamp(20px,5.5vw,26px)] crt-text-dim tracking-[0.08em] border border-border-col px-2 py-0.5">
             {clock}
           </div>
         </div>
@@ -74,10 +74,10 @@ export default function MenuView() {
           onClick={() => setShowCategoryMenu(true)}
           className="flex items-center justify-between px-4 py-3 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
         >
-          <div className="text-[clamp(15px,4vw,18px)] tracking-[0.1em] crt-text">
+          <div className="text-[clamp(26px,7vw,32px)] tracking-[0.1em] crt-text">
             {data?.title}
           </div>
-          <div className="text-[clamp(10px,2.8vw,12px)] crt-text-dim tracking-[0.1em] border border-border-col px-2 py-1">
+          <div className="text-[clamp(16px,4.5vw,20px)] crt-text-dim tracking-[0.1em] border border-border-col px-2 py-1">
             ▼ МЕНЮ
           </div>
         </button>
@@ -99,7 +99,7 @@ export default function MenuView() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: si * 0.08 }}
-                    className="text-[clamp(10px,2.8vw,12px)] crt-text-mid tracking-[0.18em] py-3 pb-2 border-b border-[rgba(74,190,121,0.25)] border-t border-t-[rgba(74,190,121,0.1)] mb-2"
+                    className="text-[clamp(18px,5vw,22px)] crt-text-mid tracking-[0.18em] py-3 pb-2 border-b border-[rgba(74,190,121,0.25)] border-t border-t-[rgba(74,190,121,0.1)] mb-2"
                   >
                     {section.title}
                   </motion.div>
@@ -117,27 +117,27 @@ export default function MenuView() {
                     className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[clamp(10px,3vw,14px)] border-b border-[rgba(74,190,121,0.15)] cursor-default"
                   >
                     <div>
-                      <div className="text-[clamp(13px,3.5vw,15px)] crt-text-dim leading-[1.4]">
+                      <div className="text-[clamp(22px,6vw,28px)] crt-text-dim leading-[1.4]">
                         {item.name}
                         {item.tag && (
-                          <span className="crt-text-amber text-[clamp(9px,2.2vw,11px)] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
+                          <span className="crt-text-amber text-[clamp(14px,3.5vw,18px)] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
                             {item.tag}
                           </span>
                         )}
                       </div>
                       {item.desc && (
-                        <div className="text-[clamp(9px,2.5vw,11px)] crt-text-mid mt-[2px] opacity-70">
+                        <div className="text-[clamp(16px,4.5vw,20px)] crt-text-mid mt-[2px] opacity-70">
                           {item.desc}
                         </div>
                       )}
                     </div>
-                    <div className="text-[clamp(13px,3.5vw,15px)] crt-text whitespace-nowrap">
+                    <div className="text-[clamp(22px,6vw,28px)] crt-text whitespace-nowrap">
                       {item.price} ₽
                     </div>
                     {(item.image || item.composition) && (
                       <button
                         onClick={() => setSelectedItem(item)}
-                        className="text-[clamp(12px,3vw,14px)] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
+                        className="text-[clamp(20px,5.5vw,26px)] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
                         title="Подробнее"
                       >
                         👁
@@ -176,7 +176,7 @@ export default function MenuView() {
             <div className="flex justify-end p-4 relative z-[22]">
               <button
                 onClick={() => setShowCategoryMenu(false)}
-                className="text-[clamp(11px,3vw,13px)] crt-text-dim border border-border-col px-3 py-1.5 hover:bg-[rgba(74,190,121,0.15)] transition-colors cursor-pointer tracking-[0.1em]"
+                className="text-[clamp(18px,5vw,22px)] crt-text-dim border border-border-col px-3 py-1.5 hover:bg-[rgba(74,190,121,0.15)] transition-colors cursor-pointer tracking-[0.1em]"
               >
                 ✕ ЗАКРЫТЬ
               </button>
@@ -191,7 +191,7 @@ export default function MenuView() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.04, duration: 0.2 }}
                   onClick={() => handleCategory(cat.id)}
-                  className={`w-full max-w-[320px] text-center py-[clamp(14px,4vw,20px)] text-[clamp(16px,4.5vw,20px)] tracking-[0.15em] border-b border-[rgba(74,190,121,0.15)] transition-all cursor-pointer ${
+                  className={`w-full max-w-[320px] text-center py-[clamp(22px,6vw,32px)] text-[clamp(28px,7.5vw,36px)] tracking-[0.15em] border-b border-[rgba(74,190,121,0.15)] transition-all cursor-pointer ${
                     cat.id === activeCategory
                       ? 'crt-text bg-[rgba(74,190,121,0.12)]'
                       : 'crt-text-dim hover:crt-text hover:bg-[rgba(74,190,121,0.08)]'

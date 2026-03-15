@@ -54,7 +54,7 @@ export default function HoloFigure() {
     <div className="absolute bottom-0 right-0 pointer-events-none z-[3]">
       <motion.div
         animate={{
-          opacity: [0.6, 0.8, 0.55, 0.8, 0.25, 0.75, 0.6],
+          opacity: [0.12, 0.2, 0.1, 0.18, 0.06, 0.15, 0.12],
           scaleY: [1, 1, 1.005, 1, 0.995, 1, 1],
         }}
         transition={{
@@ -64,7 +64,7 @@ export default function HoloFigure() {
         }}
         className="relative"
         style={{
-          filter: 'drop-shadow(0 0 8px rgba(74,190,121,0.7)) drop-shadow(0 0 20px rgba(74,190,121,0.3))',
+          filter: 'drop-shadow(0 0 4px rgba(74,190,121,0.2)) drop-shadow(0 0 10px rgba(74,190,121,0.08))',
         }}
       >
         <canvas
