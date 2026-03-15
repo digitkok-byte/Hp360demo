@@ -8,11 +8,20 @@ import HoloFigure from './HoloFigure';
 import HoloLogo from './HoloLogo';
 import DishLanding from './DishLanding';
 
+const loadingLines = [
+  '> ACCESSING DATABASE...',
+  '> LOADING ITEMS...',
+  '> RENDERING...',
+];
+
 export default function MenuView() {
   const [activeCategory, setActiveCategory] = useState('hookah');
   const [clock, setClock] = useState('00:00:00');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [showCategoryMenu, setShowCategoryMenu] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [visibleLoadLines, setVisibleLoadLines] = useState(0);
 
   useEffect(() => {
     const update = () => {
@@ -29,8 +38,27 @@ export default function MenuView() {
   const data = menuData[activeCategory];
 
   const handleCategory = useCallback((id: string) => {
-    setActiveCategory(id);
     setShowCategoryMenu(false);
+    setIsLoading(true);
+    setLoadProgress(0);
+    setVisibleLoadLines(0);
+
+    // Animate loading sequence
+    const timers: NodeJS.Timeout[] = [];
+    loadingLines.forEach((_, i) => {
+      timers.push(setTimeout(() => {
+        setVisibleLoadLines(i + 1);
+        setLoadProgress(((i + 1) / loadingLines.length) * 90);
+      }, (i + 1) * 200));
+    });
+
+    timers.push(setTimeout(() => setLoadProgress(100), loadingLines.length * 200 + 150));
+    timers.push(setTimeout(() => {
+      setActiveCategory(id);
+      setIsLoading(false);
+    }, loadingLines.length * 200 + 400));
+
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   const currentLabel = categories.find(c => c.id === activeCategory)?.label || '';
@@ -85,6 +113,41 @@ export default function MenuView() {
 
         {/* Items */}
         <AnimatePresence mode="wait">
+          {isLoading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex-1 flex flex-col justify-center pl-[5%] pr-[15px] py-4"
+            >
+              <div className="flex flex-col gap-1 mb-4">
+                {loadingLines.slice(0, visibleLoadLines).map((line, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: '100%' }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    className="text-[13px] crt-text-mid whitespace-nowrap overflow-hidden"
+                  >
+                    {line}
+                  </motion.div>
+                ))}
+              </div>
+              <div className="border border-phosphor-dim h-[10px] relative overflow-hidden">
+                <motion.div
+                  className="h-full"
+                  style={{
+                    background: 'linear-gradient(90deg, var(--color-phosphor-dim), var(--color-phosphor))',
+                    boxShadow: '0 0 8px var(--color-phosphor)',
+                  }}
+                  animate={{ width: `${loadProgress}%` }}
+                  transition={{ duration: 0.1, ease: 'linear' }}
+                />
+              </div>
+            </motion.div>
+          ) : (
           <motion.div
             key={activeCategory}
             initial={{ opacity: 0, y: 8 }}
@@ -149,6 +212,7 @@ export default function MenuView() {
               </div>
             ))}
           </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Holographic logo — bottom left */}
