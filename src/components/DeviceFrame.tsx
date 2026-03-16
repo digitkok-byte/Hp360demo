@@ -53,7 +53,7 @@ export default function DeviceFrame() {
             #7a9882 0%, #6a8870 20%, #5e7c64 40%,
             #527060 65%, #3e5a48 85%, #2e4436 100%)`,
           borderRadius: 'clamp(14px, 3vw, 22px)',
-          padding: 'clamp(12px, 3vw, 18px) clamp(12px, 3vw, 18px) clamp(8px, 2vw, 12px)',
+          padding: 'clamp(5px, 1.5vw, 8px) clamp(5px, 1.5vw, 8px) clamp(4px, 1vw, 6px)',
           boxShadow: `
             0 0 0 1px #8aac90,
             0 0 0 3px #1a2a1c,

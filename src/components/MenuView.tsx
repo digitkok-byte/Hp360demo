@@ -47,7 +47,7 @@ export default function MenuView() {
       {/* Header — two rows: centered logo on top, clock below */}
       <div className="border-b border-border-col bg-[rgba(6,18,9,0.9)]">
         {/* Logo row — centered */}
-        <div className="text-[28px] font-semibold tracking-[0.2em] text-center py-3 pl-[5%] pr-[15px] animate-pulse" style={{ color: '#ff4050', textShadow: '0 0 12px rgba(255,64,80,1), 0 0 28px rgba(255,40,60,0.9), 0 0 50px rgba(255,20,40,0.6), 0 0 80px rgba(255,0,30,0.4), 0 0 120px rgba(255,0,20,0.2)' }}>
+        <div className="text-[28px] font-semibold tracking-[0.2em] text-center py-3 pr-[15px] animate-pulse" style={{ paddingLeft: 10, color: '#ff4050', textShadow: '0 0 12px rgba(255,64,80,1), 0 0 28px rgba(255,40,60,0.9), 0 0 50px rgba(255,20,40,0.6), 0 0 80px rgba(255,0,30,0.4), 0 0 120px rgba(255,0,20,0.2)' }}>
           HOOKAHPLACE <span style={{ color: '#ff6070', textShadow: '0 0 12px rgba(255,96,112,1), 0 0 28px rgba(255,70,90,0.9), 0 0 50px rgba(255,50,70,0.6), 0 0 80px rgba(255,30,50,0.4)' }}>360</span>
         </div>
         {/* Clock & RAD row */}
@@ -75,9 +75,10 @@ export default function MenuView() {
         {/* Category selector bar */}
         <button
           onClick={() => setShowCategoryMenu(true)}
-          className="flex items-center gap-2 pl-[5%] pr-[15px] py-4 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
+          className="flex items-center justify-center gap-3 pr-[15px] py-4 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
+          style={{ paddingLeft: 10 }}
         >
-          <div className="text-[28px] font-semibold tracking-[0.1em] crt-text-dim">
+          <div className="text-[28px] font-semibold tracking-[0.1em] crt-text-dim text-center">
             {data?.title}
           </div>
           <div className="text-[clamp(12px,3.2vw,14px)] tracking-[0.12em] border border-[rgba(255,180,40,0.7)] rounded-md px-3 py-1.5 bg-[rgba(255,160,40,0.15)] flex-shrink-0 animate-pulse" style={{ color: '#ffcc40', textShadow: '0 0 10px rgba(255,180,40,1), 0 0 22px rgba(255,150,20,0.8), 0 0 40px rgba(255,120,10,0.5), 0 0 60px rgba(255,100,0,0.3)', boxShadow: '0 0 12px rgba(255,180,40,0.4), 0 0 24px rgba(255,140,20,0.15), inset 0 0 8px rgba(255,180,40,0.15)' }}>
@@ -93,14 +94,15 @@ export default function MenuView() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="flex-1 overflow-y-auto overflow-x-hidden pl-[5%] pr-[15px] py-4 crt-scroll"
+            className="flex-1 overflow-y-auto overflow-x-hidden pr-[15px] py-6 crt-scroll"
+            style={{ paddingLeft: 10 }}
           >
             {(() => {
               let itemIndex = 0;
               const totalItems = data?.sections.reduce((sum, s) => sum + (s.title ? 1 : 0) + s.items.length, 0) || 1;
               const delayPerItem = 2 / totalItems;
               return data?.sections.map((section, si) => (
-                <div key={si} className={si > 0 ? 'mt-[60px]' : ''}>
+                <div key={si} className={si > 0 ? 'mt-[80px]' : ''}>
                   {section.title && (() => {
                     const idx = itemIndex++;
                     return (
@@ -108,7 +110,7 @@ export default function MenuView() {
                         initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
                         animate={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
                         transition={{ delay: idx * delayPerItem, duration: 0.4, ease: 'easeOut' }}
-                        className="text-[24px] font-semibold crt-text-dim tracking-[0.2em] py-3 pl-[10px] border-b-2 border-[rgba(74,190,121,0.35)] mb-[30px] uppercase"
+                        className="text-[24px] font-semibold crt-text-dim tracking-[0.2em] py-4 border-b-2 border-[rgba(74,190,121,0.35)] mb-[40px] uppercase text-center"
                       >
                         {section.title}
                       </motion.div>
@@ -126,10 +128,10 @@ export default function MenuView() {
                           backgroundColor: 'rgba(74,190,121,0.08)',
                           transition: { duration: 0.1 },
                         }}
-                        className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-[15px] border-b border-[rgba(74,190,121,0.1)] cursor-default"
+                        className="grid grid-cols-[1fr_auto_auto] items-baseline gap-3 py-[20px] border-b border-[rgba(74,190,121,0.1)] cursor-default"
                       >
                         <div>
-                          <div className="text-[16px] crt-text-dim leading-[1.4]">
+                          <div className="text-[16px] crt-text-dim leading-[1.6]">
                             {item.name}
                             {item.tag && (
                               <span className="crt-text-amber text-[11px] border border-amber px-1 ml-1.5 align-middle tracking-[0.05em]">
@@ -138,12 +140,12 @@ export default function MenuView() {
                             )}
                           </div>
                           {item.desc && (
-                            <div className="text-[13px] crt-text-mid mt-[2px] opacity-70">
+                            <div className="text-[13px] crt-text-mid mt-[4px] opacity-70">
                               {item.desc}
                             </div>
                           )}
                         </div>
-                        <div className="text-[16px] crt-text whitespace-nowrap">
+                        <div className="text-[16px] whitespace-nowrap" style={{ color: '#ffcc40', textShadow: '0 0 8px rgba(255,180,40,0.9), 0 0 18px rgba(255,140,20,0.5), 0 0 30px rgba(255,120,10,0.25)' }}>
                           {item.price} ₽
                         </div>
                         {(item.image || item.composition) && (
@@ -189,7 +191,7 @@ export default function MenuView() {
             />
 
             {/* Category list */}
-            <div className="flex-1 flex flex-col justify-center items-center gap-1 pl-[5%] pr-[15px] relative z-[22] overflow-y-auto">
+            <div className="flex-1 flex flex-col justify-center items-center gap-1 pr-[15px] relative z-[22] overflow-y-auto" style={{ paddingLeft: 10 }}>
               {categories.map((cat, i) => (
                 <motion.button
                   key={cat.id}
