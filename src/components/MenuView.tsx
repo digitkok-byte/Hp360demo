@@ -7,6 +7,7 @@ import type { MenuItem } from '@/data/menu';
 import HoloFigure from './HoloFigure';
 import HoloLogo from './HoloLogo';
 import DishLanding from './DishLanding';
+import { playClick } from '@/utils/playClick';
 
 export default function MenuView() {
   const [activeCategory, setActiveCategory] = useState('hookah');
@@ -74,7 +75,7 @@ export default function MenuView() {
       <div className="flex flex-col overflow-hidden min-h-0 relative">
         {/* Category selector bar */}
         <button
-          onClick={() => setShowCategoryMenu(true)}
+          onClick={() => { playClick(); setShowCategoryMenu(true); }}
           className="flex items-center justify-center gap-3 pr-[15px] py-4 border-b border-border-col bg-[rgba(4,10,5,0.8)] cursor-pointer flex-shrink-0 hover:bg-[rgba(74,190,121,0.08)] transition-colors"
           style={{ paddingLeft: 10 }}
         >
@@ -150,7 +151,7 @@ export default function MenuView() {
                         </div>
                         {(item.image || item.composition) && (
                           <button
-                            onClick={() => setSelectedItem(item)}
+                            onClick={() => { playClick(); setSelectedItem(item); }}
                             className="text-[16px] crt-text-dim hover:crt-text transition-all cursor-pointer p-1 leading-none"
                             title="Подробнее"
                           >
@@ -198,7 +199,7 @@ export default function MenuView() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.04, duration: 0.2 }}
-                  onClick={() => handleCategory(cat.id)}
+                  onClick={() => { playClick(); handleCategory(cat.id); }}
                   className={`w-full max-w-[320px] text-center py-[18px] pl-[10px] text-[20px] font-semibold tracking-[0.15em] border-b border-[rgba(74,190,121,0.15)] transition-all cursor-pointer ${
                     cat.id === activeCategory
                       ? 'crt-text bg-[rgba(74,190,121,0.12)]'

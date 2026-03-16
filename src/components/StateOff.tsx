@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { playClick } from '@/utils/playClick';
 
 interface StateOffProps {
   onStart: () => void;
@@ -91,7 +92,7 @@ export default function StateOff({ onStart }: StateOffProps) {
 
       {/* START button */}
       <motion.button
-        onClick={onStart}
+        onClick={() => { playClick(); onStart(); }}
         className="relative z-[2] cursor-pointer group"
         animate={{
           opacity: [0.6, 1, 0.6],

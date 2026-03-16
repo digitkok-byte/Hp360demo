@@ -6,12 +6,21 @@ import CrtOverlays from './CrtOverlays';
 import StateOff from './StateOff';
 import BootSequence from './BootSequence';
 import MenuView from './MenuView';
+import { playClick, setSoundMuted, isSoundMuted } from '@/utils/playClick';
 
 type AppState = 'off' | 'boot' | 'menu';
 
 export default function DeviceFrame() {
   const [state, setState] = useState<AppState>('off');
   const [showFlash, setShowFlash] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
+
+  const toggleSound = useCallback(() => {
+    setSoundOn(prev => {
+      setSoundMuted(prev);
+      return !prev;
+    });
+  }, []);
 
   const handlePower = useCallback(() => {
     if (state === 'off') {
@@ -183,6 +192,27 @@ export default function DeviceFrame() {
             margin: '0 -2px -2px',
           }}
         >
+          {/* Sound toggle */}
+          {state !== 'off' && (
+            <button
+              onClick={toggleSound}
+              aria-label={soundOn ? 'Выключить звук' : 'Включить звук'}
+              className="cursor-pointer mr-auto border rounded px-1.5 py-0.5"
+              style={{
+                fontSize: 'clamp(10px, 2.5vw, 12px)',
+                letterSpacing: '0.1em',
+                color: soundOn ? '#4abe79' : 'rgba(200,230,210,0.2)',
+                borderColor: soundOn ? 'rgba(74,190,121,0.5)' : 'rgba(200,230,210,0.15)',
+                textShadow: soundOn ? '0 0 8px rgba(74,190,121,0.9), 0 0 16px rgba(74,190,121,0.4)' : 'none',
+                boxShadow: soundOn ? '0 0 6px rgba(74,190,121,0.3), inset 0 0 4px rgba(74,190,121,0.1)' : 'none',
+                background: soundOn ? 'rgba(74,190,121,0.06)' : 'transparent',
+                transition: 'all 0.2s',
+              }}
+            >
+              {soundOn ? '♪ ON' : '♪ OFF'}
+            </button>
+          )}
+
           <span
             className="tracking-[0.2em]"
             style={{
@@ -193,7 +223,7 @@ export default function DeviceFrame() {
             POWER
           </span>
           <button
-            onClick={handlePower}
+            onClick={() => { playClick(); handlePower(); }}
             aria-label="Включить устройство"
             className="relative cursor-pointer"
             style={{

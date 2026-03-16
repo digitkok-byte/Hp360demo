@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import type { MenuItem } from '@/data/menu';
+import { playClick } from '@/utils/playClick';
 
 interface DishLandingProps {
   item: MenuItem;
@@ -27,7 +28,7 @@ export default function DishLanding({ item, onBack }: DishLandingProps) {
 
       {/* Back button */}
       <button
-        onClick={onBack}
+        onClick={() => { playClick(); onBack(); }}
         className="absolute top-3 left-3 z-[12] text-[clamp(11px,3vw,13px)] crt-text-dim border border-border-col px-3 py-1.5 hover:bg-[rgba(74,190,121,0.15)] transition-colors cursor-pointer tracking-[0.1em]"
       >
         ← НАЗАД

@@ -29,15 +29,15 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
     const run = async () => {
       for (let i = 0; i < bootScript.length; i++) {
         if (cancelled) return;
-        await sleep(280);
+        await sleep(140);
         setVisibleLines(i + 1);
         setProgress(((i + 1) / bootScript.length) * 90);
       }
-      await sleep(200);
+      await sleep(100);
       setProgress(100);
-      await sleep(300);
+      await sleep(150);
       if (!cancelled) setReady(true);
-      await sleep(800);
+      await sleep(400);
       if (!cancelled) onComplete();
     };
 
